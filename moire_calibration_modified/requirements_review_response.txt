@@ -1,0 +1,9 @@
+numpy
+opencv-python
+opencv-contrib-python
+openpyxl
+tqdm
+pytest
+# Optional learned matching/refinement dependencies:
+torch
+kornia
