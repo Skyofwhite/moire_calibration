@@ -1,0 +1,30 @@
+name: Build SynthCal-FHDMi demo
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install image-processing dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install pillow numpy opencv-python-headless requests
+      - name: Download public source figures and build diagnostic crops
+        run: python scripts/build_dataset_pair_demo.py
+      - name: Upload diagnostic bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: synthcal-fhdmi-diagnostic
+          path: output/
+          if-no-files-found: error
